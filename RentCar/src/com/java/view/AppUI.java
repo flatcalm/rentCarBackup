@@ -78,5 +78,18 @@ public class AppUI {
         System.out.println("----------------------------------------");
         System.out.print(">>> ");
 	}
+	
+	// 차량 정보 수정 화면
+	public static void carModifyScreen() {
+		System.out.println("\n========= 차량 정보 수정=========");
+        System.out.println("### 1. 차량 ID 수정");
+        System.out.println("### 2. 차량 모델명 수정");
+        System.out.println("### 3. 차량 구분 수정");
+        System.out.println("### 4. 차량 요금 수정");
+        System.out.println("### 5. 차량 등급 수정");
+        System.out.println("### 6. 차량 정보 수정 취소");
+        System.out.println("----------------------------------------");
+        System.out.print(">>> ");
+	}
 
 }
