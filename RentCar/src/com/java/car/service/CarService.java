@@ -149,7 +149,7 @@ public class CarService implements AppService {
 								System.out.println("규격 외의 구분입니다. 수정을 다시 진행해주세요.");
 								return;
 							}
-							keyword = "'" + ipCarSize.toUpperCase() + "'";
+							keyword = "'" + ipCarSize + "'";
 							break;
 						case CAR_FEE:
 							System.out.print("# 수정할 차량 요금 : ");
@@ -166,7 +166,7 @@ public class CarService implements AppService {
 								System.out.println("규격 외의 등급입니다. 수정을 다시 진행해주세요.");
 								return;
 							}
-							keyword = "'" + ipCarGrade.toUpperCase() + "'";
+							keyword = "'" + ipCarGrade + "'";
 							break;
 						default:
 							System.out.println("\n### 잘못 입력했습니다.");
@@ -212,7 +212,7 @@ public class CarService implements AppService {
 	// 차량 검색 메서드
 	private List<Car> searchCarData() {
 		System.out.println("\n=============== 차량 검색 조건을 선택하세요. ===============");
-		System.out.println("[ 1. 차종 검색 | 2. 차량 ID 검색 | 3. 차량 상태 검색 | 4. 전체 차량 검색 ]");
+		System.out.println("[ 1. 차종 검색 | 2. 차량 ID 검색 | 3. 이용 중인 차량 검색 | 4. 렌트 가능 차량 검색 | 5. 전체 차량 검색 ]");
 		System.out.print(">>> ");
 		int selection = inputInteger();
 
@@ -227,11 +227,20 @@ public class CarService implements AppService {
 			System.out.println("\n### 차량 ID로 검색합니다.");
 			condition = CAR_ID;
 			break;
+//		case 3:
+//			System.out.println("\n### 차량 상태로 검색합니다.");
+//			condition = CAR_STATUS;
+//			break;
 		case 3:
-			System.out.println("\n### 차량 상태로 검색합니다.");
-			condition = CAR_STATUS;
+			System.out.println("\n### 이용 중인 차량을 검색합니다.");
+			condition = ONRENT;
 			break;
 		case 4:
+			System.out.println("\n### 렌트 가능한 차량을 검색합니다.");
+			condition = AVAILABLE;
+			// 렌트 기능 구현 후 차량 번호 선택하여 바로 렌트 가능하도록 구현 예정
+			break;
+		case 5:
 			System.out.println("\n### 전체 정보를 검색합니다.");
 			break;
 
@@ -240,13 +249,29 @@ public class CarService implements AppService {
 		}
 
 		String keyword = "";
-		if(condition != ALL) {
-			System.out.print("# 검색할 내용 : ");
+		if(condition == CAR_MODEL) {
+			System.out.print("# 검색할 차량 모델명 : ");
+			keyword = "'%" + inputString().toUpperCase() + "%'";
+		} else if(condition == CAR_ID) {
+			System.out.print("# 검색할 차량 ID : ");
 			keyword = "'%" + inputString().toUpperCase() + "%'";
 		}
 
 		return carRepository.searchCarList(condition, keyword);
 
+	}
+
+	// 이용 중인 차량의 사용자 정보 검색 메서드
+	private void onrentUserSearch() {
+		System.out.println("이용 중인 차량의 사용자 정보를 검색하시겠습니까? [Y / N]");
+		String anwser = inputString().toUpperCase();
+		
+		if(anwser.equals("Y")) {
+			
+		} else {
+			System.out.println("검색 메뉴로 돌아갑니다.");
+			return;
+		}
 	}
 
 	// 신규 차량 등록 메서드

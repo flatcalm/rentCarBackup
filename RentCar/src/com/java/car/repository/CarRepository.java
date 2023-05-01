@@ -49,9 +49,12 @@ public class CarRepository {
 		List<Car> carList = new ArrayList<>();
 
 		switch (condition) {
-		case CAR_MODEL: case CAR_ID: case CAR_STATUS:
+		case CAR_MODEL: case CAR_ID: 
 			sql = "SELECT * FROM cars WHERE " + condition.toString()
 			+ " LIKE " + keyword;
+			break;
+		case ONRENT: case AVAILABLE:
+			sql = "SELECT * FROM cars WHERE CAR_STATUS = '" + condition.toString() + "'";
 			break;
 		case ALL:
 			sql = "SELECT * FROM cars";
@@ -78,7 +81,9 @@ public class CarRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return carList;
+		
 	}
 
 	// 차량 번호를 통해 DB의 차량 정보를 수정하는 메서드

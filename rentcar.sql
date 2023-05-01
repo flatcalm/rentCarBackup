@@ -22,7 +22,7 @@ CREATE TABLE cars(
    car_size VARCHAR2(20) NOT NULL,
    car_fee NUMBER(7) NOT NULL,
    car_grade VARCHAR2(1) NOT NULL,
-   car_status VARCHAR2(10) DEFAULT 'available',
+   car_status VARCHAR2(10) DEFAULT 'AVAILABLE',
    user_num NUMBER(5) CONSTRAINT car_user_fk REFERENCES rent_users(user_num)
 );
 
@@ -38,6 +38,7 @@ CREATE TABLE rent_history(
     user_num NUMBER(5) CONSTRAINT rent_user_fk REFERENCES rent_users(user_num),
     car_num NUMBER(5) CONSTRAINT rent_car_fk REFERENCES cars(car_num),
     user_rent_date DATE DEFAULT sysdate,
+    user_exp_date DATE,
     user_return_date DATE,
     car_rent VARCHAR2(5) DEFAULT 'false'
 );
@@ -48,7 +49,6 @@ CREATE SEQUENCE rent_history_seq
     MAXVALUE 10000000
     NOCYCLE
     NOCACHE;
-
 
 
 INSERT INTO rent_users VALUES(rent_users_seq.NEXTVAL, '±è¿µÃ¶', '01081966248', 48, 'GOLD', 'Áß¶û±¸');
@@ -72,20 +72,66 @@ INSERT INTO rent_users VALUES(rent_users_seq.NEXTVAL, 'À¯ÇöÁö', '01054977969', 3
 INSERT INTO rent_users VALUES(rent_users_seq.NEXTVAL, 'ÇÏÁö¿ø', '01010486305', 22, 'BRONZE', '¸¶Æ÷±¸');
 INSERT INTO rent_users VALUES(rent_users_seq.NEXTVAL, '±è³ª·¡', '01095290245', 52, 'GOLD', 'µµºÀ±¸');
 
-INSERT INTO CARS VALUES(1,'S1','SPARK','COMPACT',105000,'B','ONRENT',1);
-INSERT INTO CARS VALUES(14,'A1','AVANTE','SMALL',132001,'S','ONRENT',1);
-INSERT INTO CARS VALUES(18,'S61','SM6','MIDSIZE',193000,'C','ONRENT',2);
-INSERT INTO CARS VALUES(9,'K33','K3','SMALL',120000,'B','ONRENT',3);
-INSERT INTO CARS VALUES(4,'M2','MORNING','COMPACT',105000,'B','ONRENT',4);
-INSERT INTO CARS VALUES(22,'G1','GRANDEUR','BIG',439000,'A','ONRENT',5);
-INSERT INTO CARS VALUES(8,'K32','K3','SMALL',120000,'C','ONRENT',6);
-INSERT INTO CARS VALUES(10,'SM31','SM3','SMALL',120000,'A','ONRENT',12);
-INSERT INTO CARS VALUES(3,'M1','MORNING','COMPACT',105000,'C','AVAILABLE',Null);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'S1','SPARK','COMPACT',105000,'B','ONRENT',1);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'S2','SPARK','COMPACT',105000,'A','onRent',13);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'M1','MORNING','COMPACT',105000,'C','available',NULL);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'M2','MORNING','COMPACT',105000,'B','ONRENT',4);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'R1','RAY','COMPACT',110000,'A','onRent',20);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'R2','RAY','COMPACT',110000,'B','onRent',18);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'K31','K3','SMALL',120000,'a','onRent',10);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'K32','K3','SMALL',120000,'C','ONRENT',6);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'K33','K3','SMALL',120000,'B','ONRENT',3);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'SM31','SM3','SMALL',120000,'A','onRent',12);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'SM32','SM3','SMALL',120000,'C','onRent',14);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'I301','I30','SMALL',132000,'A','onRent',14);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'I302','I30','SMALL',132000,'B','ONRENT',9);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'A1','AVANTE','SMALL',132001,'S','ONRENT',1);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'A2','AVANTE','SMALL',132000,'B','onRent',15);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'Sona1','Sonata','MIDSIZE',187000,'B','available',NULL);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'Sona2','Sonata','MIDSIZE',187000,'A','available',NULL);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'S61','SM6','MIDSIZE',193000,'C','ONRENT',2);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'S62','SM6','MIDSIZE',193000,'B','ONRENT',7);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'K51','K5','MIDSIZE',193000,'S','onRent',11);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'K52','K5','MIDSIZE',193000,'B','onRent',19);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'G1','GRANDEUR','BIG',439000,'A','ONRENT',5);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'G801','G80','BIG',492000,'A','repair',NULL);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'ST1','STAREX','VAN',242000,'A','available',NULL);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'ST2','STAREX','VAN',242000,'C','onRent',17);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'Q1','QM6','SUV',270000,'B','onRent',11);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'Q2','QM6','SUV',270000,'A','available',NULL);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'M1','MINI','FOREIGN',385000,'A','available',NULL);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'M2','MINI','FOREIGN',385000,'C','repair',NULL);
+INSERT INTO CARS VALUES(cars_seq.NEXTVAL,'A81','A8','FOREIGN',791000,'B','onRent',15);
 
-INSERT INTO rent_history(rent_num, user_num, car_num,user_rent_date) VALUES(rent_history_seq.NEXTVAL, 12,10, '21/12/31');
-INSERT INTO rent_history(rent_num, user_num,car_num,user_rent_date,user_return_date,car_rent) VALUES(rent_history_seq.NEXTVAL,8,3,'22/01/15','22/01/31','TRUE');
-INSERT INTO rent_history(rent_num, user_num, car_num,user_rent_date) VALUES(rent_history_seq.NEXTVAL, 3,9, '22/02/05');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 12,10, '21/12/31','21/05/06',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 8,3, '22/01/15','22/01/31','22/01/31','TRUE');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 3,9, '22/02/05','23/07/21',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 6,8, '22/03/01','23/05/16',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 5,22, '22/04/12','23/05/17',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 8,16, '22/04/13','22/04/13','22/04/15','TRUE');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 7,19, '22/05/03','23/05/19',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 9,13, '22/05/13','23/06/20',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 17,25, '22/06/27','23/07/21',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 12,17, '22/06/28','22/07/07','22/07/07','TRUE');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 18,6, '22/09/03','23/05/23',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 13,2, '22/09/29','23/10/24',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 10,7, '22/11/18','23/06/25',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 14,23, '22/11/20','22/12/04','22/12/01','TRUE');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 19,21, '22/12/07','23/05/01',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 15,30, '22/12/26','23/08/03',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 11,20, '23/01/01','23/05/15',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 11,26, '23/01/01','23/10/26',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 2,18, '23/01/03','23/12/31',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 4,4, '23/01/05','23/11/17',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 16,15, '23/02/02','23/09/09',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 21,24, '23/02/15','23/02/28','23/02/28','TRUE');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 1,1, '23/04/12','23/05/13',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 1,14, '23/04/12','23/05/12',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 20,5, '23/05/04','23/07/31',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 14,11, '23/11/03','23/05/29',null,'false');
+INSERT INTO rent_history VALUES(rent_history_seq.NEXTVAL, 14,12, '23/11/03','23/05/07',null,'false');
 
+COMMIT;
 
 
 -- ¸®¼Â¿ë µå¶ø
